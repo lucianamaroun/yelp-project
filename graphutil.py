@@ -47,6 +47,8 @@ def load_graph():
     - The users json file is a static parameter of the algorithm, defined in the
       top of this file.
     - The nodes' id are interpreted as strings.
+    - User nodes are represented as UserNode objects and they are considered the
+      same not if the reference is the same, but if the id is the same.
 
   Args:
     None.
@@ -54,19 +56,19 @@ def load_graph():
   Returns:
     A networkx.Graph() object.
   """
-  user_str = open(USER_JSON, 'r').read()
-  users = json.loads(user_str)
-
   if os.path.exists(USER_PKL):
     pkl_file = open(USER_PKL, 'r')
     graph = pickle.load(pkl_file)
     pkl_file.close()
   else:
+    user_str = open(USER_JSON, 'r').read()
+    users = json.loads(user_str)
     graph = nx.Graph()
     for user in users:
-      graph.add_node(user['user_id'])
+      user_node = user['user_id']
+      graph.add_node(user_node)
       for friend in user['friends']:
-        graph.add_edge(user['user_id'], friend)
+        graph.add_edge(user_node, friend)
     pkl_file = open(USER_PKL, 'w')
     pickle.dump(graph, pkl_file)
     pkl_file.close()
