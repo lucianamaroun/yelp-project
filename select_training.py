@@ -33,7 +33,8 @@ def get_user_reviews(user, reviews):
 
 def dump_selected_reviews(user, reviews):
   selected_reviews_str = ',\n'.join([json.dumps(review) for review in reviews])
-  open('selected/reviews-' + user['user_id'], 'w').write(selected_reviews_str)
+  open('selected/reviews-' + user['user_id'] + '.json', 'w') \
+      .write(selected_reviews_str)
 
 
 if __name__ == '__main__':
