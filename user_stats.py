@@ -21,22 +21,27 @@ def barplot(labels, data):
 users_str = open('data/yelp_academic_dataset_user.json', 'r').read()
 users_list = json.loads(users_str)
 print len(users_list)
-print users_list[0]
 
 users = {}
 
 for user in users_list:
     users[user['user_id']] = user
 
-avg_stars = []
-votes = []
+avg_stars_acc = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0}
+avg_stars_count = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0}
+
 
 for user in users_list:
     if user['review_count'] > 0:
-        votes.append(user['votes']['useful'])
-        avg_stars.append(user['average_stars'])
+        avg = int(user['average_stars'])
+        avg_stars_acc[avg] += user['votes']['useful']
+        avg_stars_count[avg] += 1
 
-scatterplot(avg_stars, votes)
+print 'Average number of useful votes per average number of stars of user'
+for i in range(6):
+    print '%d: %f votes for useful on average.' % (i,
+            avg_stars_acc[i]/float(avg_stars_count[i]))
+
 
 
 

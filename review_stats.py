@@ -41,7 +41,7 @@ for rev in reviews:
     num_votes.append(useful)
 #print acc
 #print stars_hist
-print 'Average number of useful votes per number of stars'
+print 'Average number of useful votes per number of stars of review'
 for i in range(1, 6):
     print '%d: %f votes for useful on average.' % (i,
             acc_votes[i]/float(stars_hist[i]))
