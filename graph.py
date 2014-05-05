@@ -74,7 +74,7 @@ def load_graph():
   return graph
 
 
-def print_statistics():
+def print_statistics(graph):
   """ Prints in the standard output basic statistics of the graph.
 
   Args:
@@ -83,7 +83,6 @@ def print_statistics():
   Returns:
     None.
   """
-  graph = load_graph()
   n_nodes = graph.number_of_nodes()
   n_edges = graph.number_of_edges()
   total_triangles = sum(nx.triangles(graph).values()) / 3
@@ -102,5 +101,12 @@ def print_statistics():
     paths_length_two(graph) * 100) 
 
 
+def main():
+  """Main function."""
+  graph = load_graph()
+  print_statistics(graph)
+
+
 if __name__ == '__main__':
-  print_statistics()
+  main()
+
