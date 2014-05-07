@@ -36,10 +36,12 @@ def get_vectors(useful, metric):
   useful_vec = []
   metric_vec = []
   mapping = []
+  vecfile = open('pairs.csv', 'w')
   for node in useful:
     mapping.append(node)
     useful_vec.append(useful[node])
     metric_vec.append(metric[node])
+    print >> vecfile, str(useful[node]) + ',' + str(metric[node])
   return mapping, useful_vec, metric_vec 
 
 

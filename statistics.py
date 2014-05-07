@@ -21,13 +21,21 @@ only_new_busin = new_busin_ids.difference(old_busin_ids)
 print '# only new business: %d' % len(only_new_busin)
 
 # Number of cities
-old_cities = set([busin['city'].lower().strip() for busin in old_busin])
+old_cities = set([busin['city'].title().strip() for busin in old_busin])
 print '# old cities: %d ' % len(old_cities)
 print old_cities
 
-new_cities = set([busin['city'].lower().strip() for busin in new_busin])
+new_cities = set([busin['city'].title().strip() for busin in new_busin])
 print '# new cities: %d ' % len(new_cities)
 print new_cities
+
+city_file = open('city.sql', 'w')
+print >> city_file, 'create table city (name varchar);'
+for city in new_cities:
+  print >> city_file, 'insert into city values (\'%s\');' % city
+
+intersection = new_cities.intersection(old_cities)
+print 'intersection: ' + str(intersection)
 
 only_old_cities = old_cities.difference(new_cities)
 print 'only old: ' + str(only_old_cities)
