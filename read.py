@@ -9,3 +9,8 @@ def get_reviews():
   return reviews
 
 
+def get_users():
+  users_str = open('data/yelp_academic_dataset_user.json', 'r').read()
+  users = json.loads(users_str)
+  return users
+

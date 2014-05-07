@@ -11,12 +11,10 @@ import graph
 import read
 
 
-def calculate_usefulness(reviews):
+def calculate_usefulness(users):
   useful = {}
-  for review in reviews:
-    if review['user_id'] not in useful:
-      useful[review['user_id']] = 0
-    useful[review['user_id']] += review['votes']['useful']
+  for user in users:
+    useful[user['user_id']] = user['votes']['useful']
   return useful
 
 
@@ -46,10 +44,10 @@ def get_vectors(useful, metric):
 
 
 def calculate_correlation():
-  print 'Reading reviews'
-  reviews = read.get_reviews()
+  print 'Reading users'
+  users = read.get_users()
   print 'Calculating usefulness'
-  useful = calculate_usefulness(reviews)
+  useful = calculate_usefulness(users)
   print 'Reading graph'
   reviewers_graph = graph.load_graph()
   print 'Calculating centrality'
