@@ -22,3 +22,20 @@ def read_users():
   users = json.loads(users_str)
   return users
 
+def read_reviews_reduced():
+  """Load reduced set of reviews from json file."""
+  input_file = open('reduced/review.pickle', 'r')
+  return pickle.load(input_file)
+
+
+def read_businesses_reduced():
+  """Load reduced set of businesses from json file."""
+  input_file = open('reduced/business.pickle', 'r')
+  return pickle.load(input_file)
+
+
+def read_users_reduced():
+  """Load reduced set of users from json file."""
+  input_file = open('reduced/user.pickle', 'r')
+  return pickle.load(input_file)
+
