@@ -6,7 +6,7 @@ import scipy.optimize as opt
 
 
 def get_optimization_function(ratings, attributes):
-  """ Get the function for optimization of the content based recommendation.
+  """ Provides the function for optimization in content-based recommendation.
 
   Observations:
     - The returned function expects a matrix big theta, which contains a vector
@@ -19,10 +19,12 @@ def get_optimization_function(ratings, attributes):
       restaurants are encoded in lines and attributes, in columns.
 
   Returns:
-    A functions that evaluates the optimization function.
+    A function that evaluates the optimization function.
   """
   attributes = np.column_stack((np.ones(attributes.shape[0]), attributes))
   def opt_function(big_theta):
+    big_theta = np.asmatrix(big_theta.reshape((attributes.shape[1], 
+        ratings.shape[1])))
     value = 0
     for i in range(ratings.shape[0]): # restaurant
       for j in range(ratings.shape[1]): # user
@@ -72,12 +74,19 @@ def main():
 
   opt_function = get_optimization_function(rating_matrix, attrs_matrix)
 
-  initial_guess = np.ndarray(shape=(5, len(users)), buffer=np.zeros(5*len(users)))
-  initial_guess[0] = 1
+  initial_guess = np.zeros(shape=(5, len(users)))
+  #initial_guess = np.ndarray(shape=(5, len(users)), buffer=np.zeros(5*len(users)))
+  #initial_guess[0] = 1
   #print initial_guess
 
-  opt.minimize(opt_function, initial_guess)
-
+  final_guess = opt.minimize(opt_function, initial_guess) 
+      #options={'maxiter': 10, 'disp': True})
+  final_guess = np.asmatrix(final_guess.x).reshape((5, len(users)))
+  output = open('theta.txt', 'w')
+  for j in range(len(users)):
+    for i in range(5):
+      print >> output, str(final_guess[i,j]) + ',',
+    print >> output, ''
 
 
 if __name__ == '__main__':
