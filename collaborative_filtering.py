@@ -1,4 +1,4 @@
-"""A module to perform the collaborative filtering."""
+""" A module to perform the collaborative filtering. """
 
 import numpy as np
 import read_json_data as data
@@ -26,15 +26,16 @@ def get_optimization_function(ratings, attributes):
     big_theta = np.asmatrix(big_theta.reshape((attributes.shape[1], 
         ratings.shape[1])))
     value = 0
-    for i in range(ratings.shape[0]): # restaurant
-      for j in range(ratings.shape[1]): # user
-        if not ratings[i,j]:
+    for rest in range(ratings.shape[0]):
+      for user in range(ratings.shape[1]):
+        if not ratings[rest,user]:
           continue
-        value += ((attributes[i] * big_theta[:,j])[0,0] - ratings[i,j]) ** 2
-    for j in range(ratings.shape[1]):
-      value += sum([(theta ** 2)[0,0] for theta in big_theta[:,j]])
+        rating = ratings[rest,user]
+    for user in ratings.col:
+      value += sum([(theta ** 2)[0,0] for theta in big_theta[:,user]])
     return value
   return opt_function
+
 
 def create_index_dict(my_list, id_string):
   return {x[id_string]:ind for ind, x in enumerate(my_list)}
@@ -50,6 +51,7 @@ def create_rating_matrix(reviews, users_dict, buss_dict):
     matrix[buss_index, user_index] = r['stars']
   return matrix
 
+
 def create_attrs_matrix(businesses, buss_dict):
   matrix = np.matrix(np.zeros((len(businesses), 4)))
   for b in businesses:
@@ -57,7 +59,6 @@ def create_attrs_matrix(businesses, buss_dict):
     matrix[b_index, 0] = b['attributes']['Price Range']
     matrix[b_index, 1] = b['attributes']['Good For']['lunch']
     matrix[b_index, 2] = b['attributes']['Good For']['dinner']
-    matrix[b_index, 3] = b['attributes']['Good For']['latenight']
   return matrix
  
 
@@ -79,14 +80,15 @@ def main():
   #initial_guess[0] = 1
   #print initial_guess
 
-  final_guess = opt.minimize(opt_function, initial_guess) 
-      #options={'maxiter': 10, 'disp': True})
+  final_guess = opt.minimize(opt_function, initial_guess,
+      options={'maxiter': 10, 'disp': True})
   final_guess = np.asmatrix(final_guess.x).reshape((5, len(users)))
   output = open('theta.txt', 'w')
   for j in range(len(users)):
+    point_str = ''
     for i in range(5):
-      print >> output, str(final_guess[i,j]) + ',',
-    print >> output, ''
+      point_str += str(final_guess[i,j]) + ','
+    print >> output, point_str[:-1]
 
 
 if __name__ == '__main__':
