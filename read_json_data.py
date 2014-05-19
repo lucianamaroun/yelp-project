@@ -1,6 +1,7 @@
 """A module for reading the data from the json files."""
 
 import json
+import pickle
 
 def read_reviews():
   """Load reviews from json file."""
@@ -24,18 +25,18 @@ def read_users():
 
 def read_reviews_reduced():
   """Load reduced set of reviews from json file."""
-  input_file = open('reduced/review.pickle', 'r')
+  input_file = open('reduced_data/review.pickle', 'r')
   return pickle.load(input_file)
 
 
 def read_businesses_reduced():
   """Load reduced set of businesses from json file."""
-  input_file = open('reduced/business.pickle', 'r')
+  input_file = open('reduced_data/business.pickle', 'r')
   return pickle.load(input_file)
 
 
 def read_users_reduced():
   """Load reduced set of users from json file."""
-  input_file = open('reduced/user.pickle', 'r')
+  input_file = open('reduced_data/user.pickle', 'r')
   return pickle.load(input_file)
 

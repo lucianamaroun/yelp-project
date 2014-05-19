@@ -64,7 +64,7 @@ def main():
 
   dump_reduced_users(users, relevant_user_ids)
   dump_reduced_businesses(businesses, most_reviewed)
-  dump_reduced_reviews(reviews, most_reviewed, relevant_user_ids)
+  dump_reduced_reviews(reviews, relevant_user_ids, most_reviewed)
    
 
 if __name__ == '__main__':
