@@ -5,7 +5,7 @@ import read_json_data as data
 import scipy.optimize as opt
 
 _LAMBDA = 0.01 # which value to use?
-_N_ATTRS = 2
+
 
 def get_optimization_function(ratings, n_attrs):
   """ Provides the function for optimization in collaborative filtering.
@@ -78,6 +78,7 @@ def create_attrs_matrix(businesses, buss_dict):
 def simple_example():
   """ Small example matrix with very well defined users for each of two
       attributes, as well as mid-term users. """
+  n_attrs = 2
   rating_matrix = np.matrix((
       '5 5 5 3 0 2 1 0 0 0;'
       '0 4 5 2 3 3 0 0 1 1;'
@@ -93,21 +94,24 @@ def simple_example():
       # restaurants
        1., 0., 1., 0., 1., 0.,
        0., 1., 0., 1., 0., 1.])
-  return rating_matrix, initial_guess
+  return rating_matrix, initial_guess, n_attrs
 
 
 def sample_example():
+  """ Sample from Yelp's dataset with 10 most popular restaurants, 77 most
+      interactive users for those and 2 attributes. """
   users = data.read_users_reduced()
   businesses = data.read_businesses_reduced()
   reviews = data.read_reviews_reduced()
+  n_attrs = 2
 
   users_dict = create_index_dict(users, 'user_id')
   buss_dict = create_index_dict(businesses, 'business_id')
 
   rating_matrix = create_rating_matrix(reviews, users_dict, buss_dict)
   #attrs_matrix = create_attrs_matrix(businesses, buss_dict)
-  initial_guess = np.zeros(shape=(5, len(users)))
-  return rating_matrix, initial_guess
+  initial_guess = np.ones(len(users) * n_attrs + len(businesses) * n_attrs)
+  return rating_matrix, initial_guess, n_attrs
 
 
 def mean_normalize(matrix):
@@ -144,14 +148,14 @@ def decode_big_vector(big_vector, n_rest, n_user, n_attrs):
 
 
 def main():
-  rating_matrix, initial_guess = simple_example()
+  rating_matrix, initial_guess, n_attrs = simple_example()
   n_rest = rating_matrix.shape[0]
   n_user = rating_matrix.shape[1]
   norm_rating_matrix, mean_vector = mean_normalize(rating_matrix)
-  opt_function = get_optimization_function(norm_rating_matrix, _N_ATTRS)
+  opt_function = get_optimization_function(norm_rating_matrix, n_attrs)
   final_guess = opt.minimize(opt_function, initial_guess) 
   big_theta, big_attrs = decode_big_vector(final_guess.x, n_rest, n_user,
-      _N_ATTRS)
+    n_attrs)
 
   print predict(big_theta, big_attrs, mean_vector)
   output = open('theta.txt', 'w')
