@@ -4,7 +4,8 @@ import numpy as np
 import read_json_data as data
 import scipy.optimize as opt
 
-_LAMBDA = 1 # which value to use?
+_LAMBDA = 0.01 # which value to use?
+_N_ATTRS = 2
 
 def get_optimization_function(ratings, n_attrs):
   """ Provides the function for optimization in collaborative filtering.
@@ -30,16 +31,13 @@ def get_optimization_function(ratings, n_attrs):
   def opt_function(big_vector):
     n_rest = ratings.shape[0]
     n_user = ratings.shape[1]
-    big_theta = np.asmatrix(big_vector[:n_user*n_attrs].reshape(n_user,
-        n_attrs))
-    big_attrs = np.asmatrix(big_vector[n_user*n_attrs:].reshape(n_rest,
-        n_attrs))
+    big_theta, big_attrs = decode_big_vector(big_vector, n_rest, n_user, 
+        n_attrs) 
     evaluation = 0
     for rest in range(n_rest):
       for user in range(n_user):
         if not ratings[rest,user]:
           continue
-        rating = ratings[rest,user]
         evaluation += ((big_theta[user,:] * big_attrs[rest,:].T)[0,0] -
             ratings[rest,user]) ** 2
     for user in range(n_user):
@@ -48,9 +46,7 @@ def get_optimization_function(ratings, n_attrs):
     for rest in range(n_rest):
       evaluation += _LAMBDA * sum([(attr ** 2) for attr in
           big_attrs[rest,:].tolist()[0]])
-
     return evaluation
-
   return opt_function
 
 
@@ -132,32 +128,32 @@ def predict(big_theta, big_attrs, mean_vector):
   # are the bounds supposed to be respected?
   nrow = big_theta.shape[0]
   mean_matrix = np.matrix([mean_vector] * nrow).T
-  print mean_matrix
   return big_attrs * big_theta.T + mean_matrix
 
-# TODO: Tests
-# TODO: Refactor main()
+
+def decode_big_vector(big_vector, n_rest, n_user, n_attrs):
+  """ Decodes the linear vector of variables theta and x (attributes) into two
+      matrices big theta and big attrs.
+
+  Observations:
+    - Both matrices have a individual transpose vector in each row.
+  """
+  big_theta = np.asmatrix(big_vector[:n_user*n_attrs]).reshape(n_user, n_attrs)
+  big_attrs = np.asmatrix(big_vector[n_user*n_attrs:]).reshape(n_rest, n_attrs)
+  return big_theta, big_attrs
+
+
 def main():
   rating_matrix, initial_guess = simple_example()
-  norm_rating_matrix, mean_vector = mean_normalize(rating_matrix)
-  opt_function = get_optimization_function(norm_rating_matrix, 2)
-
-  #initial_guess = np.zeros(shape=(5, len(users)))
-  #initial_guess = np.ndarray(shape=(5, len(users)), buffer=np.zeros(5*len(users)))
-  #initial_guess[0] = 1
-  #print initial_guess
-
   n_rest = rating_matrix.shape[0]
   n_user = rating_matrix.shape[1]
-  n_attrs = 2
+  norm_rating_matrix, mean_vector = mean_normalize(rating_matrix)
+  opt_function = get_optimization_function(norm_rating_matrix, _N_ATTRS)
   final_guess = opt.minimize(opt_function, initial_guess) 
-  big_theta = np.asmatrix(final_guess.x[:n_user*n_attrs].reshape(n_user,
-      n_attrs))
-  big_attrs = np.asmatrix(final_guess.x[n_user*n_attrs:].reshape(n_rest,
-      n_attrs))
+  big_theta, big_attrs = decode_big_vector(final_guess.x, n_rest, n_user,
+      _N_ATTRS)
 
   print predict(big_theta, big_attrs, mean_vector)
-
   output = open('theta.txt', 'w')
   for i in range(n_user):
     point_str = ''
