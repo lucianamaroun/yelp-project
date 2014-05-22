@@ -4,7 +4,7 @@ import numpy as np
 import read_json_data as data
 import scipy.optimize as opt
 
-_LAMBDA = 0.01 # which value to use?
+_LAMBDA = 0.01 # what value to use?
 
 
 def get_optimization_function(ratings, n_attrs):
@@ -59,6 +59,8 @@ def create_rating_matrix(reviews, users_dict, buss_dict):
   for r in reviews:
     user_id = r['user_id']
     buss_id = r['business_id']
+    if user_id not in users_dict:
+      continue
     user_index = users_dict[user_id]
     buss_index = buss_dict[buss_id]
     matrix[buss_index, user_index] = r['stars']
@@ -124,7 +126,8 @@ def mean_normalize(matrix):
     grades = [g for g in matrix[i,:].tolist()[0] if g]
     mean[i] = float(sum(grades)) / len(grades)
     for j in range(n_col):
-      norm_matrix[i,j] = matrix[i,j] - mean[i]
+      if matrix[i, j]:
+        norm_matrix[i,j] = matrix[i,j] - mean[i]
   return norm_matrix, mean
 
 
@@ -148,23 +151,35 @@ def decode_big_vector(big_vector, n_rest, n_user, n_attrs):
 
 
 def main():
-  rating_matrix, initial_guess, n_attrs = simple_example()
+  rating_matrix, initial_guess, n_attrs = sample_example()
   n_rest = rating_matrix.shape[0]
   n_user = rating_matrix.shape[1]
   norm_rating_matrix, mean_vector = mean_normalize(rating_matrix)
   opt_function = get_optimization_function(norm_rating_matrix, n_attrs)
   final_guess = opt.minimize(opt_function, initial_guess) 
+  print final_guess
   big_theta, big_attrs = decode_big_vector(final_guess.x, n_rest, n_user,
     n_attrs)
 
-  print predict(big_theta, big_attrs, mean_vector)
-  output = open('theta.txt', 'w')
+  out_pred = open('pred_ratings.txt', 'w')
+  print >> out_pred, predict(big_theta, big_attrs, mean_vector)
+  out_pred.close()
+
+  out_theta = open('theta.txt', 'w')
   for i in range(n_user):
     point_str = ''
     for j in range(n_attrs):
       point_str += str(big_theta[i,j]) + ','
-    print >> output, point_str[:-1]
+    print >> out_theta, point_str[:-1]
+  out_theta.close()
 
+  out_attrs = open('attrs.txt', 'w')
+  for i in range(n_rest):
+    point_str = ''
+    for j in range(n_attrs):
+      point_str += str(big_attrs[i,j]) + ','
+    print >> out_attrs, point_str[:-1]
+  out_attrs.close()
 
 if __name__ == '__main__':
   main()
