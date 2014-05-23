@@ -34,7 +34,7 @@ def create_random_graph(graph):
   new_graph = nx.Graph()
   new_graph.add_nodes_from(graph.nodes())
   new_graph.add_edges_from(random.sample([(a, b) for (a, b) in
-    itools.(graph.nodes(), graph.nodes()) if a != b],
+    itools.(graph.nodes(), graph.nodes()) if a < b],
     graph.number_of_edges()))
   return new_graph
 
