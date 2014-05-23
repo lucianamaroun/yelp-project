@@ -112,6 +112,23 @@ def sample_example():
 
   rating_matrix = create_rating_matrix(reviews, users_dict, buss_dict)
   #attrs_matrix = create_attrs_matrix(businesses, buss_dict)
+  print len(businesses)
+  initial_guess = np.ones(len(users) * n_attrs + len(businesses) * n_attrs)
+  return rating_matrix, initial_guess, n_attrs
+
+
+def complete_data():
+  users = data.read_users()
+  businesses = data.read_businesses()
+  reviews = data.read_reviews()
+  n_attrs = 2
+
+  users_dict = create_index_dict(users, 'user_id')
+  buss_dict = create_index_dict(businesses, 'business_id')
+
+  rating_matrix = create_rating_matrix(reviews, users_dict, buss_dict)
+  #attrs_matrix = create_attrs_matrix(businesses, buss_dict)
+  print len(businesses)
   initial_guess = np.ones(len(users) * n_attrs + len(businesses) * n_attrs)
   return rating_matrix, initial_guess, n_attrs
 
@@ -151,7 +168,7 @@ def decode_big_vector(big_vector, n_rest, n_user, n_attrs):
 
 
 def main():
-  rating_matrix, initial_guess, n_attrs = sample_example()
+  rating_matrix, initial_guess, n_attrs = complete_data() 
   n_rest = rating_matrix.shape[0]
   n_user = rating_matrix.shape[1]
   norm_rating_matrix, mean_vector = mean_normalize(rating_matrix)
