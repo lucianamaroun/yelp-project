@@ -32,10 +32,17 @@ def friends_relative_overlaps(graph, users, attendance):
 
 def create_random_graph(graph):
   new_graph = nx.Graph()
-  new_graph.add_nodes_from(graph.nodes())
-  new_graph.add_edges_from(random.sample([(a, b) for (a, b) in
-    itools.(graph.nodes(), graph.nodes()) if a < b],
-    graph.number_of_edges()))
+  nodes = graph.nodes()
+  number_nodes = graph.number_of_nodes()
+  new_graph.add_nodes_from(nodes)
+  for _ in range(graph.number_of_edges()):
+    node_a = nodes[random.choice(xrange(number_nodes))]
+    node_b = nodes[random.choice(xrange(number_nodes))]
+    while (node_a in new_graph and node_b in new_graph[node_a]) or \
+        node_a == node_b:
+      node_a = nodes[random.choice(xrange(number_nodes))]
+      node_b = nodes[random.choice(xrange(number_nodes))]
+    new_graph.add_edge(node_a, node_b)
   return new_graph
 
 
@@ -75,16 +82,18 @@ def main():
   graph = reader.read_graph()
   attendance = users_attendance(users, reviews)
   friends_overlaps = friends_relative_overlaps(graph, users, attendance)
-  random_graph = create_random_graph(graph)
-  random_overlaps = random_relative_overlaps(random_graph, users, attendance)
   friends_out = open('friends_overlaps.txt', 'w')
   for overlap in friends_overlaps:
-    print >> friends_out, _overlap
-  out_overlaps.close()
-  random_out = open('random_overlaps.txt', 'w')
-  for overlap in random_overlaps:
-    print >> random_out, overlap
-  random_out.close()
+    print >> friends_out, overlap
+  friends_out.close()
+  
+  for i in range(3):
+    random_graph = create_random_graph(graph)
+    random_overlaps = random_relative_overlaps(random_graph, users, attendance)
+    random_out = open('random_overlaps'+str(i)+'.txt', 'w')
+    for overlap in random_overlaps:
+      print >> random_out, overlap
+    random_out.close()
 
 
 if __name__ == '__main__':
