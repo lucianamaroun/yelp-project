@@ -112,7 +112,6 @@ def sample_example():
 
   rating_matrix = create_rating_matrix(reviews, users_dict, buss_dict)
   #attrs_matrix = create_attrs_matrix(businesses, buss_dict)
-  print len(businesses)
   initial_guess = np.ones(len(users) * n_attrs + len(businesses) * n_attrs)
   return rating_matrix, initial_guess, n_attrs
 
@@ -141,7 +140,7 @@ def mean_normalize(matrix):
   norm_matrix = np.matrix([[0.] * n_col for row in range(n_row)])
   for i in range(n_row):
     grades = [g for g in matrix[i,:].tolist()[0] if g]
-    mean[i] = float(sum(grades)) / len(grades)
+    mean[i] = float(sum(grades)) / len(grades) if grades else 0.
     for j in range(n_col):
       if matrix[i, j]:
         norm_matrix[i,j] = matrix[i,j] - mean[i]
