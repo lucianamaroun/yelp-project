@@ -1,0 +1,52 @@
+  \documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+\sloppy
+\captionsetup[figure]{labelsep=period}
+
+\title{Recommendation of Yelp's Reviewers: Who Should You Listen to?}
+
+\author{Luciana B. Maroun\inst{1}, Izabela K. T. Maffra\inst{1}, Thiago H. Silva\inst{1},\\
+  Pedro O. S. Vaz de Melo\inst{1}, Renato M. Assun\c{c}\~{a}o\inst{1}}
+
+\address{Universidade Federal de Minas Gerais (UFMG)
+  \email{\{lubm,karennina,thiagohs,olmo,assuncao\}@dcc.ufmg.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Table}
+
+\input{abstract}
+
+\input{introduction}
+
+\input{dataset}
+
+\input{analysis}
+
+\input{recommendation}
+
+\input{related}
+
+\input{conclusions}
+
+\bibliographystyle{sbc}
+\renewcommand\refname{References}
+\bibliography{bib}
+
+\end{document}
