@@ -23,3 +23,54 @@ Aiming to validate the presence of homophilly in the network, it was conducted t
 \label{fig:bus_olap}
 \end{figure}
 
+
+\subsection{Temporal Effect}
+Another important aspect when considering similarity of opinions is the date of
+the review. People that visit a place in the same day are more likely to
+experience the same events and to have approximate opinions. The figure
+\ref{fig:rat_heat} contains the correlation reviews given to the same
+stablishment by friends in the same day \ref{fig:fri_eq}, not friends in the
+same day \ref{fig:nfri_eq}, friends in different days \ref{fig:fri_dif} and not
+friends in different days \ref{fig:nfri_dif}. The results are normalized ---
+each cell represents the percentage of co-occurences for the given column. For
+example, in figure \ref{fig:fri_eq}, column $1$ has around $40$\% in line
+$40$\%. That means that if one individual rates $1$, there is a proportion of
+$70$\% of their friends who rated $1$, nearly $30$\% who rated $2$ and
+practically $0$\% who rated $3$, $4$ or $5$.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.5\textwidth}
+    \captionsetup{font=small}
+    \includegraphics[width=\textwidth]{img/amig_eq_n}
+    \caption{Friends in same day.}\label{fig:fri_eq}
+  \end{subfigure}%
+  ~
+  \begin{subfigure}[b]{0.5\textwidth}
+    \captionsetup{font=small}
+    \includegraphics[width=\textwidth]{img/namig_eq_n}
+    \caption{Not friends in same day.}\label{fig:nfri_eq}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{0.5\textwidth}
+    \captionsetup{font=small}
+    \includegraphics[width=\textwidth]{img/amig_dif_n}
+    \caption{Friends in different days.}\label{fig:fri_dif}
+  \end{subfigure}%
+  ~
+  \begin{subfigure}[b]{0.5\textwidth}
+    \captionsetup{font=small}
+    \includegraphics[width=\textwidth]{img/namig_dif_n}
+    \caption{Not friends in different days.}\label{fig:nfri_dif}
+  \end{subfigure}
+  ~
+  \caption{Correlation of votes between pair of users percentual by column.}
+  \label{fig:rat_heat}
+\end{figure}
+
+We can observe a gradative pattern from a strong correlation of ratings to
+almost no correlation, in which the proportion of votes on each value rules
+the intensity. Another interesting obervation is that there is a greater
+agreement between people in the same day than friends in alternative days. This
+may be related to the fact that people visiting certain place in the same date
+have something in common.
