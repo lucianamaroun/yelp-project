@@ -14,12 +14,12 @@ def filter_by_category(businesses, category='Restaurants'):
   return filtered
 
 
-def get_top_k_businesses(businesses, k=10, attribute='review_count'):
+def get_top_k_businesses(businesses, k=100, attribute='review_count'):
   id_to_attribute = {b['business_id']: b[attribute] for b in businesses}
   return heapq.nlargest(k, id_to_attribute, key=lambda k: id_to_attribute[k])
 
 
-def get_relevant_user_ids(reviews, buss_ids, threshold=5):
+def get_relevant_user_ids(reviews, buss_ids, threshold=1):
   # Get users with at least `threshold` reviews in those restaurants
   review_count = {}
   for r in reviews:
@@ -56,10 +56,10 @@ def dump_reduced_reviews(reviews, user_ids, business_ids):
 def main():
   """Main function."""
   businesses = data.read_businesses()
-  data.filtered_buss = filter_by_category(businesses)
+  filtered_buss = filter_by_category(businesses)
   most_reviewed = get_top_k_businesses(filtered_buss)
   reviews = data.read_reviews()
-  relevant_user_ids = get_relevant_user_ids(reviews, most_reviewed)
+  relevant_user_ids = get_relevant_user_ids(reviews, most_reviewed, threshold=24)
   users = data.read_users()
 
   dump_reduced_users(users, relevant_user_ids)
