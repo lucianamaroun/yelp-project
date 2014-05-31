@@ -1,0 +1,31 @@
+\section{Recommendation of Reviewers}
+Collaborative filtering is an algorithm which combines the evaluation of
+users in a bunch of topics in order to predict users rating in unseen ones. In
+this process, the evaluated elements have a set of attributes that define them
+and are closely related to their scores. The users, on the other hand, have a
+representative vector which are coefficients for the attributes and informes the
+importance given for each one of them. Considering this model, it is possible to
+discover close friends, which does not necessarily have to be friends in Yelp,
+by filtering those with small euclidian distance.
+
+The algorithm basically solves an optmization problem which consists of:
+
+\[
+min_{x^1,...,x^{n_e},\theta^1,...\theta^{n_u}}
+  \sum_{(i,j):r(i,j)=1} ((\theta^j)^T x^i - y^{(i,j)})^2 +
+  \lambda \sum_{i=1}^{n_e} \sum_{k=1}^{n} (x_k^i)^2 +
+  \lambda \sum_{j=1}^{n_u} \sum_{k=1}^{n} (\theta_k^j)^2
+\]
+
+In this formula, $x^i$ is the vector of attributes for the element $i$,
+$\theta^j$ is the coefficient vector for user $j$, $r(i,j)$ is $1$ if user $j$
+rated element $i$ and $0$ otherwise, $y^{(i,j)}$ is the rating given by user $j$
+to element $i$, $n_e$ is the number of evaluated elements, $n_u$ is the number
+of users, $n$ is the number of attributes, i.e., the dimension of $x$ and
+$\theta$ and $\lambda$ is a regularization factor. This expression tries to find
+the set of $x^i$, $i=1,...,n_e$, and $\theta^j$, $j=1,...,n_u$ which dot product
+$\theta^j \cdot x^i$ approximates the existing ratings $y^{(i,j)}$. The last two
+terms simply avoids the increase of the calculated parameters in module.
+
+In the following, a clustering algorithm is performed on the set of obtained
+$\theta^j$, $j=1,...,n_u$. Then, we recommend reviewers from the same cluster.
