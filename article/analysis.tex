@@ -1,6 +1,14 @@
 \section{Network Analysis}
 As previously mentioned, the friendship network of Yelp is rather incomplete: the majority of users does not have any connections. The users that participate on the social network, however, are highly connected, since $40.92$\% of them are in the large connected component, which means that only $1.80$\% of the OSN participants are absent. The average degree of the whole network is $4.68$ and the clustering coefficient is $0.06$.
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{img/plot}
+\caption{The visualization of the friendship network.}
+\label{fig:plot}
+\end{figure}
+%TODO: cite this in the article
+
 Yelp provides an option for users to vote in reviews that they found useful. Figure~\ref{fig:clo_use} relates the closeness centrality to the total useful votes received by a user. We observe that there are roughly three situations: users with low centrality and low usefulness; users with high centrality and low usefulness; and users with high centrality and high usefulness. There is not such a configuration in which users with high usefulness have low centrality. This is a motivation to consider the network structure as an evidence for profile of reviewers.
 
 \begin{figure}[H]
@@ -29,7 +37,7 @@ Another important aspect when considering similarity of opinions is the date of
 the review. People that visit a place in the same day are more likely to
 experience the same events and to have approximate opinions. The figure
 \ref{fig:rat_heat} contains the correlation reviews given to the same
-stablishment by friends in the same day \ref{fig:fri_eq}, not friends in the
+establishment by friends in the same day \ref{fig:fri_eq}, not friends in the
 same day \ref{fig:nfri_eq}, friends in different days \ref{fig:fri_dif} and not
 friends in different days \ref{fig:nfri_dif}. The results are normalized ---
 each cell represents the percentage of co-occurences for the given column. For
@@ -72,13 +80,14 @@ We can observe a gradative pattern from a strong correlation of ratings to
 almost no correlation, in which the proportion of votes on each value rules
 the intensity. Another interesting obervation is that there is a greater
 agreement between people in the same day than friends in alternative days. This
-may be related to the fact that people visiting certain place in the same date
+may be related to the fact that people visiting a certain place in the same date
 have something in common.
 
 \subsection{Hidden Relationships}
-RECAST\cite{} is an algorithm that identifies relationships in dataset of
-encounters of people and classifies between friend, bridge, acquaintance and
-random. Applying the method for same date reviews, supposing that the day of
+RECAST\cite{vaz2013recast} is an algorithm that identifies relationships in dataset of
+encounters of people and classifies the relationship between each pair of them as
+friend, bridge, acquaintance or
+random. Applying the method for reviews written in the same date, supposing that the day of
 the review is the same of the attendance, we obtain the result presented on
 table \ref{tab:recast}.
 
