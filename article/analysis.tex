@@ -74,3 +74,25 @@ the intensity. Another interesting obervation is that there is a greater
 agreement between people in the same day than friends in alternative days. This
 may be related to the fact that people visiting certain place in the same date
 have something in common.
+
+\subsection{Hidden Relationships}
+RECAST\cite{} is an algorithm that identifies relationships in dataset of
+encounters of people and classifies between friend, bridge, acquaintance and
+random. Applying the method for same date reviews, supposing that the day of
+the review is the same of the attendance, we obtain the result presented on
+table \ref{tab:recast}.
+
+\begin{table}[H]
+\begin{tabular}{l|rrrr}
+Relationship & \# Friends & \# Bridges & \# Acquaintances & \# Random \\ 
+\hline
+Friends on Yelp & 69 & 21 & 689 & 634 \\
+Not Friends on Yelp & 16 & 3 & 5876 & 13205 \\
+\end{tabular}
+\caption{Discovered relationships using RECAST.}
+\label{tab:recast}
+\end{table}
+
+We can observe a great value for acquaintances for Yelp users which are not
+friends. This indicates the potential of hidden friends, which share similar
+opinions.
