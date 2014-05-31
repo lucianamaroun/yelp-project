@@ -56,7 +56,7 @@ def dump_reduced_reviews(reviews, user_ids, business_ids):
 def main():
   """Main function."""
   businesses = data.read_businesses()
-  filtered_buss = filter_by_category(businesses)
+  data.filtered_buss = filter_by_category(businesses)
   most_reviewed = get_top_k_businesses(filtered_buss)
   reviews = data.read_reviews()
   relevant_user_ids = get_relevant_user_ids(reviews, most_reviewed)

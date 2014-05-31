@@ -40,3 +40,12 @@ def read_users_reduced():
   input_file = open('reduced_data/user.pickle', 'r')
   return pickle.load(input_file)
 
+def get_dict(data, id_string):
+  result = {}
+  for item in data:
+    key = item[id_string]
+    result[key] = item
+  return result
+
+
+
